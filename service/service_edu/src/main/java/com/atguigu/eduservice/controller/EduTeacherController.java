@@ -4,6 +4,7 @@ package com.atguigu.eduservice.controller;
 import com.atguigu.commonutils.R;
 import com.atguigu.eduservice.entity.EduTeacher;
 import com.atguigu.eduservice.service.EduTeacherService;
+import com.atguigu.servicebase.exceptionhandler.GuliException;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -38,7 +39,7 @@ public class EduTeacherController {
     //查询讲师所有数据
     //rest风格
     @ApiOperation(value = "所有讲师列表")
-    @GetMapping("/findAll")
+    @GetMapping("findAll")
     public R findAllteacher(){
         //调用service的方法实现查询所有的操作
         List<EduTeacher> list = eduTeacherService.list(null);
@@ -67,6 +68,11 @@ public class EduTeacherController {
 
             @ApiParam(name = "limit", value = "每页记录数", required = true)
             @PathVariable Long limit){
+        try {
+            int a = 10/0;
+        }catch(Exception e) {
+            throw new GuliException(20001,"出现自定义异常GuliException");
+        }
 
         Page<EduTeacher> pageParam = new Page<>(current, limit);
 
@@ -121,5 +127,46 @@ public class EduTeacherController {
 
         return  R.ok().data("total", total).data("rows", records);
     }
+
+    @ApiOperation(value = "新增讲师")
+    @PostMapping("addTeacher")
+    public R addTeacher(
+            @ApiParam(name = "teacher", value = "讲师对象", required = true)
+            @RequestBody EduTeacher eduTeacher){
+
+        boolean flag = eduTeacherService.save(eduTeacher);
+        if (flag){
+            return R.ok();
+        }else {
+            return R.error();
+        }
+
+    }
+
+    @ApiOperation(value = "根据ID查询讲师")
+    @GetMapping("getTeacher/{id}")
+    public R getTeacher(
+            @ApiParam(name = "id", value = "讲师ID", required = true)
+            @PathVariable String id){
+
+        EduTeacher eduTeacher = eduTeacherService.getById(id);
+        return R.ok().data("item", eduTeacher);
+    }
+
+    @ApiOperation(value = "讲师修改功能")
+    @PostMapping("updateTeacher")
+    public R updateTeacher(@ApiParam(name = "teacher", value = "讲师对象", required = true)
+                           @RequestBody EduTeacher eduTeacher){
+        boolean flag = eduTeacherService.updateById(eduTeacher);
+        if(flag){
+            return R.ok();
+        }else {
+            return R.error();
+        }
+
+    }
+
+
+
 }
 
