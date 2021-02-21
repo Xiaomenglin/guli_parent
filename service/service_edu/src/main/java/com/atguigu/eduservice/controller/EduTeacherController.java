@@ -30,6 +30,7 @@ import java.util.List;
 @Api(description = "讲师管理")
 @RestController
 @RequestMapping("/eduservice/teacher")
+@CrossOrigin
 public class EduTeacherController {
 
     //把service注入
@@ -108,7 +109,7 @@ public class EduTeacherController {
             wrapper.like("name", name);
         }
 
-        if (!StringUtils.isEmpty(level.toString()) ) {
+        if (level!=null) {
             wrapper.eq("level", level);
         }
 
@@ -119,6 +120,8 @@ public class EduTeacherController {
         if (!StringUtils.isEmpty(end)) {
             wrapper.le("gmt_create", end);
         }
+
+        wrapper.orderByDesc("gmt_create");
 
         //调用分页条件查询
         eduTeacherService.page(pageParam, wrapper);
