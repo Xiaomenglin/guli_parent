@@ -120,7 +120,7 @@ public class EduTeacherController {
         if (!StringUtils.isEmpty(end)) {
             wrapper.le("gmt_create", end);
         }
-
+        //默认根据添加时间降序排序
         wrapper.orderByDesc("gmt_create");
 
         //调用分页条件查询
