@@ -2,8 +2,10 @@ package com.atguigu.eduservice;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.context.annotation.ComponentScan;
 
+//@ServletComponentScan
 @SpringBootApplication
 @ComponentScan(basePackages = {"com.atguigu"})
 public class EduApplication {
